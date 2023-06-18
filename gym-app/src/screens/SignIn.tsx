@@ -39,8 +39,10 @@ export function SignIn() {
           secureTextEntry
         />
 
-        <Button title="Acessar"/>
+        <Button title="Acessar" />
       </Center>
+      
+      <Button title="Criar Conta" variant="outline" />
     </VStack>
   );
 }
