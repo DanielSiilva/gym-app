@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Center, ScrollView, VStack, Skeleton, Text, Heading } from 'native-base';
-import * as ImagePiker from 'expo-image-picker'
+import * as ImagePicker from 'expo-image-picker'
 
 import { ScreenHeader } from '@components/ScreenHeader';
 import { UserPhoto } from '@components/UserPhoto';
@@ -14,13 +14,19 @@ export function Profile() {
 
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
 
-  async function handleUserPhotoSelected() {
-    await ImagePiker.launchImageLibraryAsync({
-      mediaTypes: ImagePiker.MediaTypeOptions.Images,
+  async function handleUserPhotoSelected(){
+    const photoSelected = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
-      aspect: [4,4],
-      allowsEditing: true
+      aspect: [4, 4],
+      allowsEditing: true,
     });
+
+    if(photoSelected.canceled) {
+      return;
+    }
+
+    console.log(photoSelected)
   }
 
   return (
