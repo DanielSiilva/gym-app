@@ -4,6 +4,7 @@ import { VStack, ScrollView, Center, Skeleton, Text } from 'native-base';
 
 import {ScreenHeader} from '@components/ScreenHeader'
 import {UserPhoto} from '@components/UserPhoto'
+import {Input} from '@components/Input'
 
 const PHOTO_SIZE = 33;  
 
@@ -37,6 +38,16 @@ export function Profile() {
               Alterar Foto
             </Text>
           </TouchableOpacity>
+
+          <Input
+            bg="gray.600"
+            placeholder='Nome'
+          />
+          <Input
+            bg="gray.600"
+            placeholder='E-mail'
+            isDisabled
+          />
         </Center>
       </ScrollView>
     </VStack>
