@@ -1,4 +1,3 @@
-
 import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
 import {useForm, Controller} from 'react-hook-form'
 
