@@ -38,8 +38,8 @@ export function SignUp() {
     navigation.goBack()
   }
 
-  function handleSignUp({email, name, password}:FormDataProps) {
-    fetch('http://192.168.0.111:3333/users',{
+  async function handleSignUp({email, name, password}:FormDataProps) {
+    const response = await fetch('http://192.168.0.111:3333/users',{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -47,8 +47,9 @@ export function SignUp() {
       },
       body: JSON.stringify({name, email, password})
     })
-      .then( response => response.json())
-      .then(data => console.log(data))
+    
+    const data = response.json();
+    console.log(data);
       
   }
 
