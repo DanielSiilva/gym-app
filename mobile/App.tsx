@@ -19,10 +19,12 @@ export default function App() {
         translucent
       />
       <AuthContext.Provider value={{
-        id: 1,
-        name: 'Daniel',
-        email: 'danielsousa@gmail.com',
-        avatar: 'daniel.png'
+        user:{
+          id: '1',
+          name: 'Daniel',
+          email: 'danielsousa@gmail.com',
+          avatar: 'daniel.png'
+        }
       }}>
         {fontsLoaded ? <Routes /> : <Loading />}
       </AuthContext.Provider>
