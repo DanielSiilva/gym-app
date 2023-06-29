@@ -2,7 +2,8 @@ import { ReactNode, createContext, useState } from "react";
 import { UserDTO } from "@dtos/UserDTO";
 
 export type AuthContextDataProps = {
-  user: UserDTO
+  user: UserDTO;
+  singIn: (email: string, password: string) => void;
 }
 
 type AuthContextProviderProps ={
@@ -19,9 +20,19 @@ export function AuthContextProvider ({children}: AuthContextProviderProps){
     avatar: 'danielGostoso.png'
   });
 
+  function singIn(email: string, password: string) {
+    setUser({
+      id: '',
+      name: '',
+      email,
+      avatar: '',
+    })
+  }
+
   return(
     <AuthContext.Provider value={{
-      user
+      user,
+      singIn
     }}>
       {children}
     </AuthContext.Provider>
