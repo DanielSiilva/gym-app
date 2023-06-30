@@ -1,3 +1,4 @@
+import {useState} from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from "@react-navigation/native";
 import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from "native-base";
@@ -19,6 +20,8 @@ type FormData = {
 }
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false)
+
   const {singIn} = useAuth();
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
   const toast = useToast()
@@ -31,7 +34,9 @@ export function SignIn() {
 
   async function handleSignIn({ email, password }: FormData){
     try {
+      setIsLoading(true)
       await singIn(email, password)
+      
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message: 'nâo foi possiviel entrar. Tente novamente mais tarde'
@@ -41,6 +46,8 @@ export function SignIn() {
         placement: 'top',
         bgColor: 'red.500'
       })
+
+      setIsLoading(false)
     }
   }
 
@@ -94,7 +101,11 @@ export function SignIn() {
             )}
           />
 
-          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
+          <Button 
+            title="Acessar" 
+            onPress={handleSubmit(handleSignIn)}
+            isLoading={isLoading}
+          />
         </Center>
 
         <Center mt={24}>
