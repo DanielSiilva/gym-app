@@ -5,6 +5,7 @@ import { HStack, VStack, FlatList, Text, Heading, useToast } from 'native-base';
 
 import { AppError } from '@utils/AppError';
 import {api} from '@services/api'
+import { ExerciseDTO } from '@dtos/ExerciseDTO';
 
 import { Group } from '@components/Group';
 import { HomeHeader } from '@components/HomeHeader';
@@ -12,10 +13,11 @@ import { ExerciseCard } from '@components/ExerciseCard';
 import {AppNavigatorRoutesProps} from "@routes/app.routes"
 
 
+
 export function Home() {
   const [groupSelected, setGroupSelected] = useState('Costas')
   const [groups, setGroups] = useState<string[]>([])
-  const [exercises, setExercises] = useState<string[]>([])
+  const [exercises, setExercises] = useState<ExerciseDTO[]>([])
 
   const toast = useToast()
   const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -44,7 +46,7 @@ export function Home() {
   async function fetchExercisesByGroup() {
     try {
       const response = await api.get(`exercises/bygroup/${groupSelected}`)
-      console.log(response.data);
+      setExercises(response.data);
    
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -103,7 +105,7 @@ export function Home() {
 
         <FlatList 
           data={exercises}
-          keyExtractor={item => item}
+          keyExtractor={item => item.id}
           renderItem={({item}) => (
             <ExerciseCard onPress={handleOpenExerciseDetails} />
           )}
