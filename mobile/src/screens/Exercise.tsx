@@ -7,11 +7,15 @@ import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
 import { ExerciseDTO } from '@dtos/ExerciseDTO';
+
 import BodySvg from '@assets/body.svg';
 import SeriesSvg from '@assets/series.svg';
 import RepetitionsSvg from '@assets/repetitions.svg';
+
 import { Button } from '@components/Button';
 import { Loading } from '@components/Loading';
+
+
 type RouteParamsProps = {
   exerciseId: string;
 }
@@ -20,13 +24,19 @@ export function Exercise() {
   const [sendingRegister, setSendingRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
+
   const navigation = useNavigation<AppNavigatorRoutesProps>();
+
   const route = useRoute();
   const toast = useToast();
+
   const { exerciseId } = route.params as RouteParamsProps;
+
   function handleGoBack() {
     navigation.goBack();
   }
+
+  
   async function fetchExerciseDetails() {
     try {
       setIsLoading(true);
@@ -75,6 +85,8 @@ export function Exercise() {
   useEffect(() => {
     fetchExerciseDetails();
   },[exerciseId])
+
+
   return (
     <VStack flex={1}>
       <VStack px={8} bg="gray.600" pt={12}>
