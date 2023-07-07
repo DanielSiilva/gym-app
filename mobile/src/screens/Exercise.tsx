@@ -4,6 +4,7 @@ import { Box, Heading, HStack, Icon, Image, Text, useToast, VStack } from 'nativ
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
+
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
 import { ExerciseDTO } from '@dtos/ExerciseDTO';
@@ -26,7 +27,6 @@ export function Exercise() {
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
-
   const route = useRoute();
   const toast = useToast();
 
@@ -36,7 +36,6 @@ export function Exercise() {
     navigation.goBack();
   }
 
-  
   async function fetchExerciseDetails() {
     try {
       setIsLoading(true);
@@ -85,7 +84,6 @@ export function Exercise() {
   useEffect(() => {
     fetchExerciseDetails();
   },[exerciseId])
-
 
   return (
     <VStack flex={1}>
