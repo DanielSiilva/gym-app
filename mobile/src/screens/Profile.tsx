@@ -85,14 +85,24 @@ export function Profile() {
         const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri) as FileInfo
 
         if(photoInfo.size && (photoInfo.size  / 1024 / 1024 ) > 5){
+
           return toast.show({
             title: 'Essa imagem é muito grande. Escolha uma de até 5MB.',
             placement: 'top',
             bgColor: 'red.500'
           })
+
         }
 
-        setUserPhoto(photoSelected.assets[0].uri);
+        const fileExtension = photoSelected.assets[0].uri.split('.').pop();
+
+        const photoFile = {
+          name: `${user.name}.${fileExtension}`.toLowerCase(),
+          uri: photoSelected.assets[0].uri,
+          type: `${photoSelected.assets[0].type}/${fileExtension}`
+        }
+
+        console.log(photoFile);
       }
 
     } catch (error) {
