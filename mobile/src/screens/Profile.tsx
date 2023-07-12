@@ -11,6 +11,8 @@ import {yupResolver} from '@hookform/resolvers/yup'
 
 import { useAuth } from '@hooks/useAuth';
 
+import userPhotoDefaultImg from '@assets/userPhotoDefault.png'
+
 import { UserPhoto } from '@components/UserPhoto';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
@@ -53,7 +55,7 @@ const profileSchema = yup.object({
 export function Profile() {
   const [isUpdating, setIsUpdating] = useState(false)
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
-  const [userPhoto, setUserPhoto] = useState('https://avatars.githubusercontent.com/u/94769388?v=4');
+
 
   const toast = useToast()
   const { user, updateUserProfile} = useAuth();
@@ -178,7 +180,11 @@ export function Profile() {
               />
             :
               <UserPhoto 
-                source={{ uri: userPhoto }}
+              source={
+                user.avatar 
+                ? {uri: `${api.defaults.baseURL}/avatar/${user.avatar}`} 
+                : userPhotoDefaultImg
+              }
                 alt="Foto do usuário"
                 size={PHOTO_SIZE}
               />
