@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
+
 import { AppError } from "@utils/AppError";
-import { storageAuthTokenGet } from "@storage/storageAuthToken";
+import { storageAuthTokenGet, storageAuthTokenSave } from "@storage/storageAuthToken";
 
 type SignOut = () => void;
 
@@ -8,6 +9,7 @@ type PromiseType = {
   onSuccess: (token: string) => void;
   onFailure: (error: AxiosError) => void;
 }
+
 type APIInstanceProps = AxiosInstance & {
   registerInterceptTokenManager: (signOut: SignOut) => () => void;
 }
@@ -28,9 +30,8 @@ api.registerInterceptTokenManager = singOut => {
           singOut();
           return Promise.reject(requestError)
         }
-
+        
         const originalRequestConfig = requestError.config;
-
         if(isRefreshing) {
           return new Promise((resolve, reject) => {
             failedQueued.push({
@@ -47,6 +48,24 @@ api.registerInterceptTokenManager = singOut => {
 
         isRefreshing = true
 
+        return new Promise(async (resolve, reject) => {
+          try {
+            const { data } = await api.post('/sessions/refresh-token', { refresh_token });
+
+            await storageAuthTokenSave({ token: data.token, refresh_token: data.refresh_token });
+          } catch (error: any) {
+            failedQueued.forEach(request => {
+              request.onFailure(error);
+            })
+
+            singOut();
+            reject(error);
+          } finally {
+            isRefreshing = false;
+            failedQueued = []
+          }
+        })
+
       }
 
       singOut();
@@ -58,7 +77,6 @@ api.registerInterceptTokenManager = singOut => {
       return Promise.reject(requestError)
     }
   });
-  
   return () => {
     api.interceptors.response.eject(interceptTokenManager);
   }
