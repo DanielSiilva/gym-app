@@ -11,6 +11,8 @@ import { Exercise } from '@screens/Exercise';
 import { History } from '@screens/History';
 import { Profile } from '@screens/Profile';
 
+
+
 type AppRoutes = {
   home: undefined;
   exercise: { exerciseId: string};
